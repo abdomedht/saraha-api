@@ -93,5 +93,3 @@ Root Route returns a welcome message:
 Ensure your MongoDB server is up and .env variables are valid before starting.
 
 📜 License
-
-This project is open source and free to use.
