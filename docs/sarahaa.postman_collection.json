@@ -1,0 +1,343 @@
+{
+  "info": {
+    "_postman_id": "84fb493b-e285-4151-b6dd-5c2414089332",
+    "name": "sarahaa",
+    "description": "# Sarahaa API (Anonymous Messages)\n\nThis collection documents a simple **anonymous messaging** API (similar to “Sarahah”). It contains endpoints for:\n\n- **Auth**: signup, login, confirm email\n    \n- **User**: view profile, share profile, update profile, freeze account, update password\n    \n- **Message**: send anonymous message, delete message\n    \n\n> **Environment / variables** \n  \n\n## Base URL\n\nThis collection is configured to use the variable:\n\n- `{{onlone-url}}` → `http://saraha-anonymous-message.eu-4.evennode.com/`\n    \n\nSome requests still point to `http://localhost:3000/...` (local dev). To make the collection consistent, consider replacing those URLs with `{{onlone-url}}` as well.\n\n## Common variables\n\nThe collection currently has these collection variables (as saved in the collection):\n\n- `{{onlone-url}}` (base URL)\n    \n- `{{token}}` (a Bearer token string)\n    \n- `{{bearer}}`, `{{bearer1}}` (raw JWTs)\n    \n\n> Recommendation: standardize on **one** variable, e.g. `{{accessToken}}`, and use it consistently via the header `Authorization: Bearer {{accessToken}}`. \n  \n\n---\n\n# Authentication\n\nMost “user” endpoints require a JWT access token.\n\n## Header\n\nUse the `Authorization` header:\n\n``` http\nAuthorization: Bearer <jwt>\n\n ```\n\nNotes based on existing saved requests:\n\n- Some requests use `Authorization` (capital A), others `authorization`.\n    \n- Some requests include a raw token without the `Bearer` prefix.\n    \n\n> Recommendation: keep it consistent with `Authorization: Bearer {{token}}`. \n  \n\n---\n\n# Content Types\n\nWhen sending JSON payloads, use:\n\n``` http\nContent-Type: application/json\n\n ```\n\n(Several requests have JSON bodies saved but no explicit `Content-Type` header. Many servers still accept it, but documenting it is helpful.)\n\n---\n\n# Error format (expected)\n\nNo error examples are saved in this collection. A typical error response pattern for REST APIs is:\n\n``` json\n{\n  \"message\": \"<human-readable error>\",\n  \"errors\": [\n    {\n      \"field\": \"<field>\",\n      \"message\": \"<field error>\"\n    }\n  ]\n}\n\n ```\n\nCommon HTTP status codes you may see:\n\n- `400` Validation error / bad request\n    \n- `401` Missing/invalid token\n    \n- `403` Not allowed\n    \n- `404` Not found\n    \n- `409` Conflict (duplicate email/username)\n    \n- `500` Server error\n    \n\n---\n\n# How to use this collection\n\n1. **Signup** a new user.\n    \n2. **Confirm email** (requires a confirmation token).\n    \n3. **Login** to receive an access token.\n    \n4. Use the token for any **protected user** endpoints.\n    \n5. Use **Share profile** to get a `userId`, then use **Send message** to send anonymous messages to that user.\n    \n\n---\n\n# Notes / gaps\n\n- This collection currently has **no saved examples** (responses). To enable richer documentation and to support mocking, save at least one example per request after sending real requests.\n    \n- Some endpoints appear duplicated between `localhost` and `{{onlone-url}}`. Consider standardizing to one base URL.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "32886557"
+  },
+  "item": [
+    {
+      "name": "auth",
+      "item": [
+        {
+          "name": "signup",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n\"userName\": \"sq\",\r\n\"password\": \"123456Mn\",\r\n\"email\": \"abdulrahmanmedhat635@gmail.com\",\r\n\"confirmPassword\":\"123456Mn\",\r\n\"phone\":\"01013862354\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{onlone-url}}auth/signup",
+              "host": [
+                "{{onlone-url}}auth"
+              ],
+              "path": [
+                "signup"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "login",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n\"password\": \"123456Mn\",\r\n\"email\": \"abdulrahmanmedhat635@gmail.com\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{onlone-url}}auth/login",
+              "host": [
+                "{{onlone-url}}auth"
+              ],
+              "path": [
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "confirm-email",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "authorization",
+                "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFiZHVscmFobWFubWVkaGF0NjM1QGdtYWlsLmNvbSIsImlhdCI6MTczNjcwMTQyNCwiZXhwIjoxNzM2NzA1MDI0fQ.IT2Rp0JPJ3WZqibswwzP2E2Yi1D91OeCrUCQs_x3pdc",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{onlone-url}}auth/confirm-email",
+              "host": [
+                "{{onlone-url}}auth"
+              ],
+              "path": [
+                "confirm-email"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "user",
+      "item": [
+        {
+          "name": "profile",
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {}
+          },
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "authorization",
+                "value": " u eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NzE1ZjU0OWNjZGQyY2QwMDJiMTgxYiIsImlhdCI6MTczNTU2NTUwNn0.cu2fJWrjfxhnN6CyT1n7AnRqYb_SMmbWRxHviVn43a0",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/user/profile",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "user",
+                "profile"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "shareProfile",
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {}
+          },
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3ODg2MGIyMjQ5Y2Y1OTE1NzlmNGI5NyIsImlhdCI6MTczNzAyOTc2OCwiZXhwIjoxNzM3MDMzMzY4fQ.uQQwsPsRZ0Xu2DT5WFAjiqwdUO7nJhMHmdGT7hXm83U",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{onlone-url}}profile/:userId",
+              "host": [
+                "{{onlone-url}}profile"
+              ],
+              "path": [
+                ":userId"
+              ],
+              "variable": [
+                {
+                  "key": "userId",
+                  "value": "678860b2249cf591579f4b97"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "updateUser",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3ODNmNWYwMTRmZmExMjg5N2EwMTYwZiIsImlhdCI6MTczNjcyMzczOSwiZXhwIjoxNzM2NzI3MzM5fQ.0XIQEAlYLDeY6uSAdxZRNxbJgLL1fg95m5l_11lqkaI",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n\"userName\":\"Usere2\",\r\n\"DOB\":\"9-17-2030\",\r\n\"gender\":\"female\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{onlone-url}}user/profile",
+              "host": [
+                "{{onlone-url}}user"
+              ],
+              "path": [
+                "profile"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "freezeUser",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3ODg2MGIyMjQ5Y2Y1OTE1NzlmNGI5NyIsImlhdCI6MTczNjk5MTU3MywiZXhwIjoxNzM2OTk1MTczfQ.XCp3Lx25oUGfnm3aOf4HaEUIUmzN5cF2lUqR0txW4JA",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{onlone-url}}user/profile",
+              "host": [
+                "{{onlone-url}}user"
+              ],
+              "path": [
+                "profile"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "updatePassword",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3ODdkYzY2Yzg1OTkwZDBkZTU2ZWQ3MCIsImlhdCI6MTczNjk4MTg4NywiZXhwIjoxNzM2OTg1NDg3fQ.G9q_Rw3RM1IASS42-ABguTQzUeWEkFctB2vH5xk7Mcs",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n\"oldPassword\":\"123456Mn\",\r\n\"password\":\"123456Mn12\",\r\n\"confirmPassword\":\"123456Mn12\"\r\n\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{onlone-url}}user/profile/password",
+              "host": [
+                "{{onlone-url}}user"
+              ],
+              "path": [
+                "profile",
+                "password"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "message",
+      "item": [
+        {
+          "name": "sendMessage",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"recipientId\":\"678860b2249cf591579f4b97\",\r\n    \"message\":\"helloaaa \"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{onlone-url}}message/message",
+              "host": [
+                "{{onlone-url}}message"
+              ],
+              "path": [
+                "message"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "deleteMessage",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/message/message",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "message",
+                "message"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "bearer",
+      "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NzE1ZjU0OWNjZGQyY2QwMDJiMTgxYiIsImlhdCI6MTczNTQ4MzIzM30.l8Rl9u1Y5UpDowSoJdeVWs7kHeA4Nza89q5lWk5OAL4"
+    },
+    {
+      "key": "bearer1",
+      "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NzE1ZjU0OWNjZGQyY2QwMDJiMTgxYiIsImlhdCI6MTczNTU2NTUwNn0.cu2fJWrjfxhnN6CyT1n7AnRqYb_SMmbWRxHviVn43a0"
+    },
+    {
+      "key": "onlone-url",
+      "value": "http://saraha-anonymous-message.eu-4.evennode.com/",
+      "type": "default"
+    },
+    {
+      "key": "token",
+      "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3ODg2MGIyMjQ5Y2Y1OTE1NzlmNGI5NyIsImlhdCI6MTczNzU1NTYxNywiZXhwIjoxNzM3NTU5MjE3fQ.8138BN9z3nifL1XDc5Tg8O5vb2dCPx2IjQNsC4q5VXQ",
+      "type": "default"
+    }
+  ]
+}
