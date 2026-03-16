@@ -46,11 +46,11 @@ Environment variables
 Create a .env file inside src/config/ (or copy .env.example) and set:
 
 port=3000
-DATABASE_URI=your_mongodb_connection_string
-JWT_SECRET=your_jwt_secret
-EMAIL_HOST=…
-EMAIL_USER=…
-EMAIL_PASS=…
+DATABASE_URI=
+JWT_SECRET=
+EMAIL_HOST=
+EMAIL_USER=
+EMAIL_PASS=
 
 Run in development
 
