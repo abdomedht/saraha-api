@@ -1,95 +1,35 @@
-saraha-api
+# Saraha Clone API 💬
 
-A RESTful Node.js / Express backend API for a Saraha-like anonymous messaging platform — users can sign up, manage their profiles, and receive anonymous messages securely.
+A secure backend for an anonymous messaging application, inspired by "Saraha". This API focuses on user privacy, secure message transmission, and efficient data handling.
 
-🚀 Features
+## 🌟 Key Features
+* **Anonymity**: Engineered for secure, anonymous messaging between users.
+* **Advanced Security**: 
+    * Secure **JWT-based** authentication routes.
+    * Password encryption using **Bcrypt**.
+    * Protected routes for viewing messages.
+* **Validation**: Strict request body validation using **Joi** / **Express-validator**.
+* **Message Management**: Full CRUD for receiving, viewing, and deleting anonymous feedback.
+* **Profile Access**: Public profile links to receive messages without revealing user identity.
 
-🔐 User Authentication: Signup, login, and email confirmation
+## 🛠️ Tech Stack
+* **Backend**: Node.js & Express.js
+* **Database**: MongoDB & Mongoose
+* **Security**: JWT, Bcrypt, Helmet (optional/if used)
 
-👤 User Profile: View, update, and manage user profile & password
+## 📁 Folder Structure
+* `models/`: Database schemas (User, Message).
+* `controllers/`: Logic for handling requests.
+* `routes/`: API endpoint definitions.
+* `middlewares/`: Authentication and error handling.
 
-📨 Anonymous Messaging: Send/receive anonymous messages
+## 🚀 Installation
+1. Clone the repo: `git clone https://github.com/abdomedht/saraha-api.git`
+2. Install packages: `npm install`
+3. Configure environment variables in `.env`.
+4. Run the app: `npm run dev`
 
-🛡️ Role-based Access Control: Protect routes with roles
-
-🚫 Account Freeze: Users can freeze (soft delete) their profiles
-
-🧱 Tech Stack
-
-Node.js
-
-Express.js
-
-MongoDB + Mongoose
-
-JWT Authentication
-
-Joi for input validation
-
-dotenv for environment configuration
-
-bcrypt + crypto-js for hashing & token security
-
-🧩 Installation
-
-Clone the repo
-
-git clone https://github.com/abdomedht/saraha-api.git
-cd saraha-api
-
-Install dependencies
-
-npm install
-
-Environment variables
-
-Create a .env file inside src/config/ (or copy .env.example) and set:
-
-port=3000
-DATABASE_URI=
-JWT_SECRET=
-EMAIL_HOST=
-EMAIL_USER=
-EMAIL_PASS=
-
-Run in development
-
-npm run dev
-📡 API Endpoints
-
-Here is an overview of the main API routes:
-
-🛠️ Auth
-Method	Endpoint	Description
-POST	/auth/signup	Register a new user
-PATCH	/auth/confirm-email	Confirm email address
-GET	/auth/login	Login & get JWT
-👤 User
-Method	Endpoint	Description
-GET	/user/profile	Get your logged-in user profile
-PATCH	/user/profile	Update your profile
-PATCH	/user/profile/password	Update password
-DELETE	/user/profile	Freeze (soft delete) account
-GET	/user/profile/:userId	Share public profile by ID
-
-All user routes are protected — JWT required.
-Role based access control: Admin, User.
-
-📌 Error Handling
-
-A global error handler is applied — any unhandled route returns:
-
-{ "message": "In-valid routing" }
-📫 Testing
-
-You can use tools like Postman to test the API endpoints. Create collections for Auth, User, and Messaging flows.
-
-🧠 Notes
-
-Root Route returns a welcome message:
-
-{ "message": "Welcome in node.js project powered by express and ES6" }
-
-Ensure your MongoDB server is up and .env variables are valid before starting.
-
-📜 License
+## 🔌 Core Endpoints
+* `POST /user/signup` - Create an account
+* `POST /message/send` - Send an anonymous message
+* `GET /message/all` - View received messages (Auth required)
